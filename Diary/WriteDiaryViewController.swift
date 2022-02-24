@@ -25,10 +25,10 @@ class WriteDiaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureContentsTextView()
-        configureDatePicker()
+        self.configureContentsTextView()
+        self.configureDatePicker()
+        self.configureInputField()
         self.confirmButton.isEnabled = false
-        configureInputField()
         
     }
     private func configureContentsTextView() {
@@ -56,7 +56,7 @@ class WriteDiaryViewController: UIViewController {
     @IBAction func tapConfirmButton(_ sender: UIBarButtonItem) {
         guard let title = self.titleTextFields.text else { return }
         guard let contents = self.contentsTextView.text else { return }
-        guard let date = self.dateTextFields.text else { return }
+        guard let date = self.diaryDate else { return }
         let diary = Diary(title: title, contents: contents, date: date, isStar: false)
         self.delegate?.didSelectReigster(diary: diary)
         self.navigationController?.popViewController(animated: true)

@@ -116,7 +116,7 @@
         <!--Diary Detail View Controller-->
         <scene sceneID="unI-b3-tCi">
             <objects>
-                <viewController id="B2B-vs-x00" customClass="DiaryDetailViewController" customModule="Diary" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DiaryDetailViewController" id="B2B-vs-x00" customClass="DiaryDetailViewController" customModule="Diary" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Vq1-BB-rl8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -178,6 +178,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="48.5" height="31"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="수정"/>
+                                        <connections>
+                                            <action selector="tapEditButton:" destination="B2B-vs-x00" eventType="touchUpInside" id="Zow-t7-dif"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NTy-xN-6Dw">
                                         <rect key="frame" x="98.5" y="0.0" width="48.5" height="31"/>
@@ -185,6 +188,9 @@
                                         <buttonConfiguration key="configuration" style="plain" title="삭제">
                                             <color key="baseForegroundColor" systemColor="systemPinkColor"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="tapDeleteButton:" destination="B2B-vs-x00" eventType="touchUpInside" id="Izd-Ub-op1"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -208,6 +214,11 @@
                             <constraint firstItem="dzN-EX-uAp" firstAttribute="trailing" secondItem="Vt4-5y-2Fv" secondAttribute="trailing" constant="24" id="vrp-50-In5"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="contentsTextView" destination="sx6-rX-XpN" id="Geg-eJ-6eZ"/>
+                        <outlet property="dateLabel" destination="FcV-f6-ED8" id="wK0-Fc-DKD"/>
+                        <outlet property="titleLabel" destination="aRH-JQ-6tw" id="PKz-oF-r7W"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K7j-LQ-vUb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -242,13 +253,13 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="QMz-bE-alC">
-                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="itemSize" width="180" height="200"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DiarycCell" id="Urz-Ur-Y32" customClass="DiaryCell" customModule="Diary" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DiaryCell" id="Urz-Ur-Y32" userLabel="DiaryCell" customClass="DiaryCell" customModule="Diary" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="180" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="27U-E4-jdg">
@@ -309,7 +320,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="552" y="-483"/>
+            <point key="canvasLocation" x="550.72463768115949" y="-483.48214285714283"/>
         </scene>
         <!--일기 작성-->
         <scene sceneID="WIW-hk-KXG">
