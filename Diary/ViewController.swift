@@ -25,6 +25,13 @@ class ViewController: UIViewController {
         self.configureCollectionView()
         self.loadDiaryList()
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(editDiaryNotification),
+            name: NSNotification.Name("editDiary"),
+            object: nil
+        )
+        
     }
     
     //CollectionView 에 세팅하는 값
@@ -33,6 +40,18 @@ class ViewController: UIViewController {
         self.collectionView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
+    }
+    
+    
+    @objc func editDiaryNotification(_ notification : Notification) {
+        guard let diary = notification.object as? Diary else { return }
+        guard let row = notification.userInfo?["indexPath.row"] as? Int else { return }
+        self.diaryList[row] = diary
+        //고차함수. 날짜 순으로 재정렬을 한다.
+        self.diaryList = self.diaryList.sorted(by: {
+            $0.date.compare($1.date) == .orderedDescending
+        })
+        self.collectionView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -59,7 +78,6 @@ class ViewController: UIViewController {
         }
         let userDefaults = UserDefaults.standard
         userDefaults.set(date, forKey: "diaryList")
-        
     }
     
     //저장된 UserDefault 에서 값을 가져오기.
@@ -95,8 +113,6 @@ extension ViewController : UICollectionViewDataSource {
     //컬렉션뷰에 지정된 위치에 표시할 셀을 요청하는 메소드
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //DiaryCell 로 다운캐스팅에 실패하면 UICollectionViewCell 이 빈 값으로 리턴
-        
-        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DiaryCell", for: indexPath) as? DiaryCell else { return UICollectionViewCell() }
         let diary = self.diaryList[indexPath.row]
         cell.titleLabel.text = diary.title
@@ -136,6 +152,7 @@ extension ViewController : UICollectionViewDelegate {
         viewContoller.diary = diary
         viewContoller.indexPath = indexPath
         viewContoller.delegate = self
+        
         self.navigationController?.pushViewController(viewContoller, animated: true)
     }
 }

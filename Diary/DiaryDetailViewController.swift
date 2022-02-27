@@ -15,8 +15,8 @@ class DiaryDetailViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var dateLabel: UILabel!
-    weak var delegate: DiaryDetailViewDelegate?
     
+    weak var delegate: DiaryDetailViewDelegate?
     var diary : Diary?
     var indexPath : IndexPath?
     
@@ -40,12 +40,39 @@ class DiaryDetailViewController: UIViewController {
         self.contentsTextView.text = diary.contents
         self.dateLabel.text = self.dateToString(date: diary.date)
     }
-    
+    //수정버튼
     @IBAction func tapEditButton(_ sender: UIButton) {
+        guard let viewController = self.storyboard?.instantiateViewController(withIdentifier: "WriteDiaryViewController") as?
+                WriteDiaryViewController else { return }
+        guard let indexPath = self.indexPath else { return }
+        guard let diary = self.diary else { return }
+        viewController.diaryEditorMode = .edit(indexPath, diary)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(editDiaryNotification(_:)),
+            name: NSNotification.Name("editDiary"),
+            object: nil)
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    //수정버튼을 누르게 되면, editDiary notificaton 을 관찰 하는 옵저버가 추가가 되었음.
+    //WriteDiaryNotification 에서 수정되면 editDiaryNotification 메소드가 호출이 된다.
+    @objc func editDiaryNotification(_ notification : Notification ) {
+        guard let diary = notification.object as? Diary else { return }
+        guard let row = notification.userInfo?["indexPath.row"] as? Int else { return }
+        self.diary = diary
+        self.configureView()
+        
+    }
+    //삭제버튼
     @IBAction func tapDeleteButton(_ sender: UIButton) {
         guard let indexPath = self.indexPath else { return }
         self.delegate?.didSelectDelete(indexPath: indexPath)
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    //관찰이 필요 없어질때 옵저버들을 없애준다.
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }

@@ -11,6 +11,11 @@ protocol WriteDiaryViewDelegete : AnyObject {
     func didSelectReigster(diary: Diary)
 }
 
+enum DiaryEditorMode{
+    case new
+    case edit(IndexPath, Diary)
+}
+
 class WriteDiaryViewController: UIViewController {
 
     @IBOutlet weak var titleTextFields: UITextField!
@@ -21,6 +26,7 @@ class WriteDiaryViewController: UIViewController {
     private let datePicker = UIDatePicker()
     private var diaryDate : Date?
     weak var delegate : WriteDiaryViewDelegete?
+    var diaryEditorMode : DiaryEditorMode = .new
     
     
     override func viewDidLoad() {
@@ -28,6 +34,7 @@ class WriteDiaryViewController: UIViewController {
         self.configureContentsTextView()
         self.configureDatePicker()
         self.configureInputField()
+        self.configureEditMode()
         self.confirmButton.isEnabled = false
         
     }
@@ -58,7 +65,21 @@ class WriteDiaryViewController: UIViewController {
         guard let contents = self.contentsTextView.text else { return }
         guard let date = self.diaryDate else { return }
         let diary = Diary(title: title, contents: contents, date: date, isStar: false)
-        self.delegate?.didSelectReigster(diary: diary)
+        
+        //diary 모드에 따른 로직
+        switch self.diaryEditorMode {
+        case .new:
+            self.delegate?.didSelectReigster(diary: diary)
+            
+        case let .edit(indexPath, _):
+            NotificationCenter.default.post(
+                name: NSNotification.Name("editDiary"),
+                object: diary,
+                userInfo: [
+                    "indexPath.row" : indexPath.row
+                ]
+            )
+        }
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -73,6 +94,29 @@ class WriteDiaryViewController: UIViewController {
         //이 로직은 datePicker 값은 textField에 값을 타이핑 하는 것이 아니기 때문에,
         //로직을 통하여 값이 변화 했다는 것으로 인지를 시켜줘야 한다.
         self.dateTextFields.sendActions(for: .editingChanged)
+    }
+    
+    private func configureEditMode() {
+        switch self .diaryEditorMode {
+        case let .edit(_, Diary) :
+            self.titleTextFields.text = Diary.title
+            self.contentsTextView.text = Diary.contents
+            self.dateTextFields.text = self.dateToString(date: Diary.date)
+            self.diaryDate = Diary.date
+            self.confirmButton.title = "수정"
+            
+        default:
+            break
+        }
+        
+    }
+    
+    //Date타입으로 전달 받으면 문자열로 바꿔주는 메소드
+    private func dateToString(date : Date) -> String {
+        let formmater = DateFormatter()
+        formmater.dateFormat = "yy년 MM월 dd일(EEEEE)"
+        formmater.locale = Locale(identifier: "ko_KR")
+        return formmater.string(from: date)
     }
     
     //구성 필드
