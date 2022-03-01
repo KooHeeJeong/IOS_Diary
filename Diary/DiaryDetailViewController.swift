@@ -19,6 +19,7 @@ class DiaryDetailViewController: UIViewController {
     weak var delegate: DiaryDetailViewDelegate?
     var diary : Diary?
     var indexPath : IndexPath?
+    var starButton : UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,11 @@ class DiaryDetailViewController: UIViewController {
         self.titleLabel.text = diary.title
         self.contentsTextView.text = diary.contents
         self.dateLabel.text = self.dateToString(date: diary.date)
+        self.starButton = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(tapStarButton))
+        self.starButton?.image = diary.isStar ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        self.starButton?.tintColor = .orange
+        self.navigationItem.rightBarButtonItem = self.starButton
+        
     }
     //수정버튼
     @IBAction func tapEditButton(_ sender: UIButton) {
@@ -69,6 +75,19 @@ class DiaryDetailViewController: UIViewController {
         guard let indexPath = self.indexPath else { return }
         self.delegate?.didSelectDelete(indexPath: indexPath)
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    //즐겨찾기 버튼
+    @objc func tapStarButton() {
+        guard let isStar = self.diary?.isStar else { return }
+        //즐겨찾기 클릭 여부
+        if isStar {
+            self.starButton?.image = UIImage(systemName: "star")
+        } else {
+            self.starButton?.image = UIImage(systemName: "star.fill")
+        }
+        self.diary?.isStar = !isStar
+        
     }
     
     //관찰이 필요 없어질때 옵저버들을 없애준다.
