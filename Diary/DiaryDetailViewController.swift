@@ -7,16 +7,11 @@
 
 import UIKit
 
-protocol DiaryDetailViewDelegate : AnyObject {
-    func didSelectDelete(indexPath : IndexPath)
-}
-
 class DiaryDetailViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var dateLabel: UILabel!
     
-    weak var delegate: DiaryDetailViewDelegate?
     var diary : Diary?
     var indexPath : IndexPath?
     var starButton : UIBarButtonItem?
@@ -24,6 +19,13 @@ class DiaryDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureView()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(starDiaryNotification(_:)),
+            name: NSNotification.Name("starDiary"),
+            object: nil
+        )
 
     }
     
@@ -65,15 +67,19 @@ class DiaryDetailViewController: UIViewController {
     //WriteDiaryNotification 에서 수정되면 editDiaryNotification 메소드가 호출이 된다.
     @objc func editDiaryNotification(_ notification : Notification ) {
         guard let diary = notification.object as? Diary else { return }
-        guard let row = notification.userInfo?["indexPath.row"] as? Int else { return }
         self.diary = diary
         self.configureView()
         
     }
     //삭제버튼
     @IBAction func tapDeleteButton(_ sender: UIButton) {
-        guard let indexPath = self.indexPath else { return }
-        self.delegate?.didSelectDelete(indexPath: indexPath)
+        guard let uuid = self.diary?.uuid else { return }
+        
+        NotificationCenter.default.post(
+            name: NSNotification.Name("deleteDiary"),
+            object: uuid,
+            userInfo: nil)
+        
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -87,7 +93,25 @@ class DiaryDetailViewController: UIViewController {
             self.starButton?.image = UIImage(systemName: "star.fill")
         }
         self.diary?.isStar = !isStar
-        
+        NotificationCenter.default.post(
+            name: NSNotification.Name("starDiary"),
+            object: [
+                "diary" : self.diary as Any,
+                "isStar": self.diary?.isStar ?? false,
+                "uuid": self.diary?.uuid as Any
+            ],
+            userInfo: nil
+        )
+    }
+    @objc func starDiaryNotification(_ notification : Notification){
+        guard let starDiary = notification.object as? [String: Any] else { return }
+        guard let diary = self.diary else { return }
+        guard let isStar = starDiary["isStar"] as? Bool else { return }
+        guard let uuid = starDiary["uuid"] as? String else { return }
+        if diary.uuid == uuid {
+            self.diary?.isStar = isStar
+            self.configureView()
+        }
     }
     
     //관찰이 필요 없어질때 옵저버들을 없애준다.

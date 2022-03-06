@@ -25,7 +25,7 @@
 		38460AD027C4F8CE001ABA8A /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		38460AD227C50A3F001ABA8A /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
 		38A30EF527C26B8E001EED5D /* WriteDiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteDiaryViewController.swift; sourceTree = "<group>"; };
-		38F6A20527C258DE00655B96 /* Diary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Diary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		38AC6B2027CF904A00E487F1 /* Diary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Diary.app; path = "/Users/koohee/IOS/Diary/build/Debug-iphoneos/Diary.app"; sourceTree = "<absolute>"; };
 		38F6A20827C258DE00655B96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38F6A20A27C258DE00655B96 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		38F6A20C27C258DE00655B96 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,16 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				38F6A20727C258DE00655B96 /* Diary */,
-				38F6A20627C258DE00655B96 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		38F6A20627C258DE00655B96 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				38F6A20527C258DE00655B96 /* Diary.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		38F6A20727C258DE00655B96 /* Diary */ = {
@@ -102,7 +93,7 @@
 			);
 			name = Diary;
 			productName = Diary;
-			productReference = 38F6A20527C258DE00655B96 /* Diary.app */;
+			productReference = 38AC6B2027CF904A00E487F1 /* Diary.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -129,7 +120,7 @@
 				Base,
 			);
 			mainGroup = 38F6A1FC27C258DE00655B96;
-			productRefGroup = 38F6A20627C258DE00655B96 /* Products */;
+			productRefGroup = 38F6A1FC27C258DE00655B96;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -321,6 +312,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -349,6 +341,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
